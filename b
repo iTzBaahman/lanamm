@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Beautiful Lana</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe5ec, #ffc2d1, #ffb3c6);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Floating Hearts Animation Background */
+        .heart-bg {
+            position: absolute;
+            font-size: 24px;
+            color: rgba(255, 75, 110, 0.3);
+            animation: float Up 6s linear infinite;
+            bottom: -50px;
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-105vh) translateX(50px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Main Card Style */
+        .love-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(255, 75, 110, 0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            z-index: 10;
+            transition: transform 0.3s ease;
+        }
+
+        .love-card:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            color: #ff4b6e;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subheading {
+            color: #774955;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        /* Quote Display Box */
+        .quote-container {
+            min-height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .quote {
+            color: #4a4a4a;
+            font-size: 1.3rem;
+            line-height: 1.6;
+            font-weight: 500;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Interactive Button */
+        .btn {
+            background: linear-gradient(45deg, #ff4b6e, #ff758f);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 75, 110, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: linear-gradient(45deg, #ff758f, #ff4b6e);
+            box-shadow: 0 8px 20px rgba(255, 75, 110, 0.6);
+            transform: scale(1.05);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Signature */
+        .signature {
+            margin-top: 40px;
+            color: #ff4b6e;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="love-card">
+        <h1>To My Beautiful Lana ❤️</h1>
+        <div class="subheading">A little reminder of how much you mean to me...</div>
+        
+        <div class="quote-container">
+            <p class="quote" id="quote-text">Lana, you are the most beautiful chapter in my life story.</p>
+        </div>
+
+        <button class="btn" onclick="changeQuote()">Click for a Reason I Love You</button>
+        
+        <div class="signature">With all my love forever,<br>Bahman</div>
+    </div>
+
+    <script>
+        // Array of love quotes and beautiful words
+        const loveQuotes = [
+            "Lana, you are the most beautiful chapter in my life story.",
+            "Every single day, I find new reasons to love you more than the day before.",
+            "Your smile is my absolute favorite sight in the entire world.",
+            "In your eyes, I found my safe haven and my happiest home.",
+            "No matter where life takes us, my heart will always belong to you, Lana.",
+            "You make the world infinitely brighter just by being yourself.",
+            "Loving you is as natural as breathing, and just as essential to my life.",
+            "Lana, you are my sun, my moon, and all of my stars."
+        ];
+
+        let currentIdx = 0;
+
+        function changeQuote() {
+            const quoteText = document.getElementById("quote-text");
+            
+            // Get a new index that isn't the same as the current one
+            let newIdx = currentIdx;
+            while (newIdx === currentIdx) {
+                newIdx = Math.floor(Math.random() * loveQuotes.length);
+            }
+            currentIdx = newIdx;
+
+            // Apply fade out effect momentarily before changing text
+            quoteText.style.opacity = 0;
+            
+            setTimeout(() => {
+                quoteText.innerText = loveQuotes[currentIdx];
+                quoteText.style.opacity = 1;
+                quoteText.style.animation = 'none';
+                quoteText.offsetHeight; /* trigger reflow */
+                quoteText.style.animation = 'fadeIn 0.5s ease-in-out';
+            }, 200);
+
+            // Pop a temporary floating heart on button click
+            createHeart();
+        }
+
+        // Function to generate floating background hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-bg');
+            heart.innerText = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 3 + 's'; // Between 3s and 6s
+            heart.style.fontSize = Math.random() * 20 + 15 + 'px'; // Random size
+            
+            document.body.appendChild(heart);
+
+            // Remove heart after animation finishes
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        // Periodically generate background hearts
+        setInterval(createHeart, 800);
+    </script>
+</body>
+</html>
